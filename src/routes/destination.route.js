@@ -9,6 +9,10 @@ const router = express.Router();
 router.get('/', validate(destinationValidation.queryDestination), destinationController.getDataset);
 router.get('/detail/:dataId', auth, destinationController.getDetailDataset);
 router.get('/saved', auth, validate(destinationValidation.querySaved), destinationController.getDestinations);
+router.post('/', destinationController.createDestination);          
+router.put('/:id', destinationController.updateDestination);       
+router.delete('/:id', destinationController.deleteDestination);     
+
 router.post('/add', auth, validate(destinationValidation.idDestination), destinationController.saveDestinationToFavorite);
 router.delete('/delete', auth, validate(destinationValidation.idDestination), destinationController.deleteSavedDestination);
 

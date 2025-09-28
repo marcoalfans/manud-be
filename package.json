@@ -12,6 +12,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
+    "seed:esm": "node --env-file=.env destinations.mjs",
+    "seed-umkm": "node --env-file=.env umkm.mjs",
     "lint": "eslint .",
     "deploy": "firebase deploy --only functions"
   },
