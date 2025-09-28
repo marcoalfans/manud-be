@@ -1,10 +1,10 @@
 {
-  "name": "melancong-api",
+  "name": "manud-api",
   "version": "1.0.0",
-  "description": "Melancong-API using Express and Firebase",
+  "description": "Manud-API using Express and Firebase",
   "type": "module",
   "main": "src/app.js",
-  "author": "Indra Yana <gdindra13@gmail.com>",
+  "author": "Group 3 MTI",
   "license": "MIT",
   "engines": {
     "node": "18"
