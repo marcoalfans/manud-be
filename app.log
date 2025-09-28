@@ -1,0 +1,35 @@
+nohup: ignoring input
+
+> manud-api@1.0.0 start
+> node src/app.js
+
+12:23:21.271 [32minfo[39m: App listening on http://0.0.0.0:7777
+12:23:21.305 [32minfo[39m: CSV file successfully processed
+12:23:28.458 [32minfo[39m: GET 200 / in 7ms
+12:23:38.984 [32minfo[39m: GET 200 /destinations in 7ms
+12:23:51.783 [31merror[39m: POST 401 /chatbot in 19ms
+12:24:17.586 [32minfo[39m: GET 200 /destinations in 5ms
+12:25:10.302 [31merror[39m: POST 400 /auth/register in 1027ms
+12:25:21.520 [32minfo[39m: GET 200 /destinations in 5ms
+12:26:04.712 [32minfo[39m: OPTIONS 204 /destinations in 2ms
+12:26:04.720 [32minfo[39m: OPTIONS 204 /destinations in 2ms
+12:26:04.750 [32minfo[39m: GET 200 /destinations in 5ms
+12:26:04.779 [32minfo[39m: GET 304 /destinations in 4ms
+12:26:07.277 [32minfo[39m: GET 304 /destinations in 6ms
+12:26:07.317 [32minfo[39m: GET 304 /destinations in 5ms
+12:27:23.927 [32minfo[39m: OPTIONS 204 /auth/token-validation in 1ms
+12:27:23.931 [32minfo[39m: OPTIONS 204 /auth/token-validation in 1ms
+12:27:23.933 [32minfo[39m: OPTIONS 204 /auth/token-validation in 1ms
+12:27:23.935 [32minfo[39m: OPTIONS 204 /auth/token-validation in 1ms
+12:27:23.964 [31merror[39m: GET 401 /auth/token-validation in 9ms
+12:27:23.997 [31merror[39m: GET 401 /auth/token-validation in 5ms
+12:27:24.028 [31merror[39m: GET 401 /auth/token-validation in 4ms
+12:27:24.060 [31merror[39m: GET 401 /auth/token-validation in 4ms
+12:27:40.799 [31merror[39m: GET 401 /auth/logout in 2ms
+12:27:50.344 [32minfo[39m: GET 304 /destinations in 10ms
+12:27:50.373 [32minfo[39m: GET 304 /destinations in 3ms
+12:28:02.587 [32minfo[39m: OPTIONS 204 /auth/login in 1ms
+12:28:02.932 [31merror[39m: POST 400 /auth/login in 308ms
+12:28:40.490 [32minfo[39m: GET 200 / in 1ms
+12:28:51.024 [32minfo[39m: OPTIONS 204 /auth/login in 5ms
+12:28:51.299 [31merror[39m: POST 400 /auth/login in 250ms

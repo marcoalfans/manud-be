@@ -1,0 +1,43 @@
+type User @table {
+  username: String!
+  email: String!
+  createdAt: Timestamp!
+  displayName: String
+  profilePictureUrl: String
+}
+
+type Folder @table {
+  owner: User!
+  parent: Folder
+  name: String!
+  createdAt: Timestamp!
+  description: String
+}
+
+type Document @table {
+  owner: User!
+  folder: Folder
+  title: String!
+  fileUrl: String!
+  fileType: String!
+  uploadDate: Timestamp!
+  isPublic: Boolean!
+  description: String
+  tags: [String]
+}
+
+type AccessPermission @table {
+  user: User!
+  document: Document
+  folder: Folder
+  permissionType: String!
+  createdAt: Timestamp!
+}
+
+type PublicShare @table {
+  document: Document!
+  shareToken: String!
+  createdAt: Timestamp!
+  expiresAt: Timestamp!
+  maxDownloads: Int
+}
