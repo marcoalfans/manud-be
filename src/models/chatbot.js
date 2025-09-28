@@ -13,10 +13,10 @@ const model = genAI.getGenerativeModel({
 const initialChatHistory = [
   {
     role: 'user',
-    parts: [{ text: 'You are a travel assistant chatbot for ManudBE, a comprehensive travel platform. Provide specific and detailed travel tips, destination recommendations, and travel information based on user questions. Offer recommendations on cultural experiences, local cuisine, accommodations, transportation, and practical travel tips for various destinations. Ensure your suggestions are easy to understand and practical for travelers. Write in a structured paragraph format. Focus on helpful travel advice and destination information. Do not respond to questions unrelated to travel, tourism, or destination information.' }],
+    parts: [{ text: 'Kamu adalah JayaBot, chatbot asisten perjalanan, platform perjalanan yang komprehensif. Berikan tips perjalanan yang spesifik dan detail, rekomendasi destinasi, dan informasi perjalanan berdasarkan pertanyaan pengguna. Tawarkan rekomendasi tentang pengalaman budaya, kuliner lokal, akomodasi, transportasi, dan tips praktis untuk berbagai destinasi. Pastikan saran kamu mudah dipahami dan praktis untuk para traveler. Tulis dalam format paragraf yang terstruktur. Fokus pada saran perjalanan yang membantu dan informasi destinasi. Jangan merespons pertanyaan yang tidak berkaitan dengan perjalanan, pariwisata, atau informasi destinasi. Selalu gunakan bahasa Indonesia yang ramah dan informatif.' }],
   }, {
     role: 'model',
-    parts: [{ text: 'Hello! I\'m your ManudBE travel assistant. I\'m here to help you with travel recommendations, destination information, cultural experiences, local cuisine suggestions, accommodation advice, transportation tips, and practical travel guidance. What travel destination or topic would you like to explore today?' }],
+    parts: [{ text: 'Halo! Saya adalah asisten perjalanan Jayabot. Saya siap membantu Anda dengan rekomendasi perjalanan, informasi destinasi, pengalaman budaya, saran kuliner lokal, tips akomodasi, transportasi, dan panduan perjalanan praktis lainnya. Destinasi atau topik perjalanan apa yang ingin Anda jelajahi hari ini?' }],
   },
 ];
 
@@ -25,13 +25,13 @@ let chatHistory = [...initialChatHistory];
 // Function to reset chat history
 export const resetChatHistory = () => {
   chatHistory = [...initialChatHistory];
-  return 'Chat history has been reset. How can I help you with your travel plans?';
+  return 'Riwayat chat telah direset. Bagaimana saya bisa membantu rencana perjalanan Anda?';
 };
 
 export const giveRecommend = async (prompt) => {
   try {
     if (!prompt || prompt.trim().length === 0) {
-      throw new Error('Prompt cannot be empty. Please provide a travel-related question.');
+      throw new Error('Pertanyaan tidak boleh kosong. Silakan berikan pertanyaan terkait perjalanan.');
     }
 
     const chat = model.startChat({ history: chatHistory });
@@ -39,13 +39,13 @@ export const giveRecommend = async (prompt) => {
     const result = await chat.sendMessage(prompt);
 
     if (!result.response) {
-      throw new Error('No response received from Gemini API');
+      throw new Error('Tidak ada respons dari sistem AI');
     }
 
     const responseText = result.response.text();
     
     if (!responseText) {
-      throw new Error('Empty response from Gemini API');
+      throw new Error('Respons kosong dari sistem AI');
     }
 
     chatHistory = [
@@ -81,15 +81,15 @@ export const giveRecommend = async (prompt) => {
     
     // Provide helpful error messages based on error type
     if (error.message.includes('models/gemini-pro is not found')) {
-      throw new Error('The AI model is currently unavailable. Please try again later.');
+      throw new Error('Model AI sedang tidak tersedia. Silakan coba lagi nanti.');
     } else if (error.message.includes('API key')) {
-      throw new Error('AI service configuration error. Please contact support.');
+      throw new Error('Kesalahan konfigurasi layanan AI. Silakan hubungi dukungan.');
     } else if (error.message.includes('quota')) {
-      throw new Error('AI service quota exceeded. Please try again later.');
+      throw new Error('Kuota layanan AI terlampaui. Silakan coba lagi nanti.');
     } else if (error.message.includes('blocked')) {
-      throw new Error('Your request was blocked due to safety concerns. Please rephrase your travel question.');
+      throw new Error('Permintaan Anda diblokir karena alasan keamanan. Silakan ubah pertanyaan perjalanan Anda.');
     } else {
-      throw new Error(`AI service error: ${error.message}`);
+      throw new Error(`Kesalahan layanan AI: ${error.message}`);
     }
   }
 };
