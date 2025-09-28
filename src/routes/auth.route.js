@@ -15,6 +15,7 @@ router.get('/token-validation', authController.tokenValidation);
 router.get('/google', authController.redirectGoogleLogin);
 router.get('/google-callback', authController.loginWithGoogle);
 router.get('/verify-email', authController.verifyEmail);
+router.get('/email-verified', authController.emailVerified);
 router.post('/resend-verification', validate(emailValidation.resendVerification), authController.resendVerification);
 
 export default router;

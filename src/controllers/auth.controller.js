@@ -176,31 +176,46 @@ export const loginWithGoogle = async (req, res) => {
 
 export const verifyEmail = async (req, res) => {
   try {
-    const { token } = req.query;
+    const { token, oobCode } = req.query;
 
-    if (!token) {
-      return res.status(httpStatus.BAD_REQUEST).send({
-        status: httpStatus.BAD_REQUEST,
-        message: 'Verification token is required',
+    // Handle Firebase Auth verification (oobCode)
+    if (oobCode) {
+      const result = await authModel.verifyFirebaseEmail(oobCode);
+      
+      return res.status(httpStatus.OK).send({
+        status: httpStatus.OK,
+        message: 'Email verified successfully with Firebase',
+        data: {
+          email: result.email,
+          verified: true,
+        },
       });
     }
 
-    const result = await authModel.verifyUserEmail(token);
+    // Handle legacy custom token verification
+    if (token) {
+      const result = await authModel.verifyUserEmail(token);
 
-    if (!result) {
-      return res.status(httpStatus.BAD_REQUEST).send({
-        status: httpStatus.BAD_REQUEST,
-        message: 'Invalid or expired verification token',
+      if (!result) {
+        return res.status(httpStatus.BAD_REQUEST).send({
+          status: httpStatus.BAD_REQUEST,
+          message: 'Invalid or expired verification token',
+        });
+      }
+
+      return res.status(httpStatus.OK).send({
+        status: httpStatus.OK,
+        message: 'Email verified successfully',
+        data: {
+          email: result.email,
+          verified: true,
+        },
       });
     }
 
-    return res.status(httpStatus.OK).send({
-      status: httpStatus.OK,
-      message: 'Email verified successfully',
-      data: {
-        email: result.email,
-        verified: true,
-      },
+    return res.status(httpStatus.BAD_REQUEST).send({
+      status: httpStatus.BAD_REQUEST,
+      message: 'Verification token or code is required',
     });
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).send({
@@ -219,11 +234,45 @@ export const resendVerification = async (req, res) => {
     return res.status(httpStatus.OK).send({
       status: httpStatus.OK,
       message: 'Verification email sent successfully',
+      data: {
+        // Include verification link for development/testing
+        verificationLink: result.verificationLink
+      }
     });
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).send({
       status: httpStatus.BAD_REQUEST,
       message: error.message,
+    });
+  }
+};
+
+// New endpoint for email verification success page
+export const emailVerified = async (req, res) => {
+  try {
+    return res.status(httpStatus.OK).send(`
+      <html>
+        <head>
+          <title>Email Verified - ManudBE</title>
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+            .success { color: #28a745; }
+            .container { max-width: 500px; margin: 0 auto; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1 class="success">✅ Email Verified Successfully!</h1>
+            <p>Your email has been verified. You can now login to your ManudBE account.</p>
+            <p><a href="http://manudaja.my.id:7777">Go to ManudBE</a></p>
+          </div>
+        </body>
+      </html>
+    `);
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      message: 'Error displaying verification success page',
     });
   }
 };

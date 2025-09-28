@@ -40,6 +40,8 @@ const config = {
   email: {
     user: process.env.EMAIL_USER,
     password: process.env.EMAIL_PASSWORD,
+    enabled: process.env.EMAIL_ENABLED !== 'false', // Default true, set EMAIL_ENABLED=false to disable
+    skipVerification: process.env.NODE_ENV === 'development' && process.env.SKIP_EMAIL_VERIFICATION === 'true',
   },
 };
 
