@@ -1,4 +1,7 @@
-## API URL : [https://melancong-be.vercel.app](https://melancong-be.vercel.app)
+# ManudBE API
+
+A powerful backend API for travel and destination management built with Node.js, Express, and Firebase.
+
 ## API Endpoints
 |             Endpoint          | Method |                                      Body                                      |                     Description                   | JWT Token |
 | :---------------------------: | :----: | :----------------------------------------------------------------------------: | :-----------------------------------------------: | :-------: |
@@ -22,7 +25,7 @@
 |   /chatbot                    |  POST  |                                prompt                                          | Ask travel tips/question for chatbot              |  &#9745;  |
 
 ## Firebase | Cloud Firestore
-![Melancong_DB](https://github.com/user-attachments/assets/7f4405fc-470e-4290-8482-5caa11b6dcf6)
+Database structure for ManudBE application using Firestore collections.
 
 ## Running Locally
 ```console
@@ -34,7 +37,28 @@ npm run dev
 > [!NOTE]
 > Open http://localhost:7777 with `Postman` or your API testing tool.
 
-## Deploy to Firebase Functions
+## Environment Variables
+Create a `.env` file in the root directory:
+```env
+NODE_ENV=development
+PORT=7777
+HOST=localhost
+
+# Firebase Configuration
+FIREBASE_PROJECT_ID=your-firebase-project-id
+FIREBASE_PRIVATE_KEY=your-firebase-private-key
+FIREBASE_CLIENT_EMAIL=your-firebase-client-email
+
+# JWT Configuration
+JWT_SECRET=your-jwt-secret
+JWT_ACCESS_EXPIRATION_MINUTES=30
+JWT_REFRESH_EXPIRATION_DAYS=30
+
+# Google AI Configuration
+GOOGLE_AI_API_KEY=your-google-ai-api-key
+```
+
+## Deploy to Firebase Functions (Optional)
 ```console
 npm install -g firebase-tools
 ```
@@ -45,13 +69,30 @@ firebase init
 npm run deploy
 ```
 
-## Deploy API to Google Cloud Run
+## Deploy to Digital Ocean Droplet (Recommended)
+
+> 📖 **Detailed deployment guide**: See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete step-by-step instructions.
+
+### Quick Setup:
 ```console
-docker build -t gcr.io/melanc0ng/backend:tag .
+# On your Digital Ocean droplet
+git clone https://github.com/marcoalfans/manud-be.git
+cd manud-be
+npm install
+cp .env.example .env
+# Edit .env with your configuration
+npm install -g pm2
+pm2 start src/app.js --name "manudbe-api"
+pm2 startup && pm2 save
+```
+
+## Alternative: Deploy to Google Cloud Run (Optional)
+```console
+docker build -t gcr.io/your-project-id/manudbe-api:latest .
 ```
 ```console
-docker push gcr.io/melanc0ng/backend:tag
+docker push gcr.io/your-project-id/manudbe-api:latest
 ```
 ```console
-gcloud run deploy melancong-api --image gcr.io/melanc0ng/backend:tag --platform managed
+gcloud run deploy manudbe-api --image gcr.io/your-project-id/manudbe-api:latest --platform managed
 ```

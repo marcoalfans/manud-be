@@ -1,7 +1,7 @@
 {
   "name": "manud-api",
   "version": "1.0.0",
-  "description": "Manud-API using Express and Firebase",
+  "description": "ManudBE - Backend API for travel and destination management using Express and Firebase",
   "type": "module",
   "main": "src/app.js",
   "author": "Group 3 MTI",

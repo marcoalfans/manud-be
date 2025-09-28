@@ -4,7 +4,7 @@ import config from '../utils/config.js';
 export const oauth2Client = new google.auth.OAuth2(
   config.oauth.clientId,
   config.oauth.clientSecret,
-  'https://melancong-be.vercel.app/auth/google-callback',
+  'http://localhost:7777/auth/google-callback',
 );
 
 const scopes = [

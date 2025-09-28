@@ -10,7 +10,16 @@ const router = express.Router();
 router.get('/', (req, res) => {
   res.status(200).send({
     status: 200,
-    message: 'Welcome to our API server. We recommend that you first register and login before accessing our endpoints.',
+    message: 'Welcome to ManudBE API - Your Travel Companion Backend Service',
+    description: 'A comprehensive backend API for travel and destination management',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/auth',
+      users: '/users', 
+      destinations: '/destinations',
+      chatbot: '/chatbot'
+    },
+    documentation: 'Please check README.md for complete API documentation'
   });
 });
 
