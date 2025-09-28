@@ -4,6 +4,7 @@ import userRoute from './user.route.js';
 import authRoute from './auth.route.js';
 import destinationRoute from './destination.route.js';
 import chatbotRoute from './chatbot.route.js';
+import testRoute from './test.route.js';
 
 const router = express.Router();
 
@@ -39,6 +40,10 @@ const defaultRoutes = [
   {
     path: '/chatbot',
     route: chatbotRoute,
+  },
+  {
+    path: '/test',
+    route: testRoute,
   },
 ];
 

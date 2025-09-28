@@ -21,7 +21,7 @@ const serviceAccount = {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'gs://melanc0ng.appspot.com',
+  storageBucket: 'gs://manud-db-f253e.appspot.com',
 });
 
 export const db = admin.firestore();

@@ -4,7 +4,9 @@ import config from '../utils/config.js';
 export const oauth2Client = new google.auth.OAuth2(
   config.oauth.clientId,
   config.oauth.clientSecret,
-  'http://localhost:7777/auth/google-callback',
+  process.env.NODE_ENV === 'production' 
+    ? 'http://manudaja.my.id:7777/auth/google-callback'
+    : 'http://localhost:7777/auth/google-callback',
 );
 
 const scopes = [
