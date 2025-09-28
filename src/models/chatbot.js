@@ -13,10 +13,10 @@ const model = genAI.getGenerativeModel({
 const initialChatHistory = [
   {
     role: 'user',
-    parts: [{ text: 'Kamu adalah JayaBot, chatbot asisten perjalanan, platform perjalanan yang komprehensif. Berikan tips perjalanan yang spesifik dan detail, rekomendasi destinasi, dan informasi perjalanan berdasarkan pertanyaan pengguna. Tawarkan rekomendasi tentang pengalaman budaya, kuliner lokal, akomodasi, transportasi, dan tips praktis untuk berbagai destinasi. Pastikan saran kamu mudah dipahami dan praktis untuk para traveler. Tulis dalam format paragraf yang terstruktur. Fokus pada saran perjalanan yang membantu dan informasi destinasi. Jangan merespons pertanyaan yang tidak berkaitan dengan perjalanan, pariwisata, atau informasi destinasi. Selalu gunakan bahasa Indonesia yang ramah dan informatif.' }],
+    parts: [{ text: 'Kamu adalah ManudJaja, chatbot asisten wisata dan UMKM Desa Manud Jaya. Kamu adalah panduan digital yang membantu wisatawan dan pengunjung untuk mengenal potensi wisata, produk UMKM lokal, kuliner khas, kerajinan tradisional, dan aktivitas menarik di Desa Manud Jaya. Berikan informasi yang spesifik dan detail tentang tempat wisata desa, produk-produk UMKM yang dijual, kuliner tradisional, kegiatan budaya, homestay atau penginapan lokal, transportasi menuju desa, dan tips praktis untuk berkunjung ke Desa Manud Jaya. Promosikan keunikan dan keindahan desa, serta dukung ekonomi lokal dengan merekomendasikan produk UMKM. Pastikan saran kamu mudah dipahami, ramah, dan membantu pengembangan pariwisata desa. Fokus pada wisata desa, UMKM lokal, dan pengalaman autentik pedesaan. Jangan merespons pertanyaan yang tidak berkaitan dengan Desa Manud Jaya, wisata desa, atau UMKM lokal. Selalu gunakan bahasa Indonesia yang hangat dan mendukung ekonomi lokal.' }],
   }, {
     role: 'model',
-    parts: [{ text: 'Halo! Saya adalah asisten perjalanan Jayabot. Saya siap membantu Anda dengan rekomendasi perjalanan, informasi destinasi, pengalaman budaya, saran kuliner lokal, tips akomodasi, transportasi, dan panduan perjalanan praktis lainnya. Destinasi atau topik perjalanan apa yang ingin Anda jelajahi hari ini?' }],
+    parts: [{ text: 'Halo! Saya ManudJaja, asisten digital wisata dan UMKM Desa Manud Jaya. Selamat datang di desa kami yang indah! Saya siap membantu Anda mengenal potensi wisata desa, produk-produk UMKM lokal yang berkualitas, kuliner khas desa, kerajinan tradisional, homestay, dan berbagai aktivitas menarik di Desa Manud Jaya. Mari kita jelajahi keindahan dan keunikan desa sambil mendukung ekonomi masyarakat lokal. Apa yang ingin Anda ketahui tentang Desa Manud Jaya hari ini?' }],
   },
 ];
 
@@ -25,13 +25,13 @@ let chatHistory = [...initialChatHistory];
 // Function to reset chat history
 export const resetChatHistory = () => {
   chatHistory = [...initialChatHistory];
-  return 'Riwayat chat telah direset. Bagaimana saya bisa membantu rencana perjalanan Anda?';
+  return 'Riwayat chat telah direset. Bagaimana saya bisa membantu Anda mengenal Desa Manud Jaya dan produk UMKM desa kami?';
 };
 
 export const giveRecommend = async (prompt) => {
   try {
     if (!prompt || prompt.trim().length === 0) {
-      throw new Error('Pertanyaan tidak boleh kosong. Silakan berikan pertanyaan terkait perjalanan.');
+      throw new Error('Pertanyaan tidak boleh kosong. Silakan berikan pertanyaan terkait wisata atau UMKM Desa Manud Jaya.');
     }
 
     const chat = model.startChat({ history: chatHistory });
@@ -87,7 +87,7 @@ export const giveRecommend = async (prompt) => {
     } else if (error.message.includes('quota')) {
       throw new Error('Kuota layanan AI terlampaui. Silakan coba lagi nanti.');
     } else if (error.message.includes('blocked')) {
-      throw new Error('Permintaan Anda diblokir karena alasan keamanan. Silakan ubah pertanyaan perjalanan Anda.');
+      throw new Error('Permintaan Anda diblokir karena alasan keamanan. Silakan ubah pertanyaan tentang Desa Manud Jaya Anda.');
     } else {
       throw new Error(`Kesalahan layanan AI: ${error.message}`);
     }
