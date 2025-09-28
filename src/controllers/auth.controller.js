@@ -171,5 +171,59 @@ export const loginWithGoogle = async (req, res) => {
   const token = await signToken(userId, data.name, data.email, data.verified_email);
 
   // TODO: replace this url with the link to the oauth google success page of your front-end app
-  return res.redirect(`http://localhost:3000/auth/google/callback?token=${token}`);
+  return res.redirect(`http://manudaja.my.id:7777/auth/google/callback?token=${token}`);
+};
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(httpStatus.BAD_REQUEST).send({
+        status: httpStatus.BAD_REQUEST,
+        message: 'Verification token is required',
+      });
+    }
+
+    const result = await authModel.verifyUserEmail(token);
+
+    if (!result) {
+      return res.status(httpStatus.BAD_REQUEST).send({
+        status: httpStatus.BAD_REQUEST,
+        message: 'Invalid or expired verification token',
+      });
+    }
+
+    return res.status(httpStatus.OK).send({
+      status: httpStatus.OK,
+      message: 'Email verified successfully',
+      data: {
+        email: result.email,
+        verified: true,
+      },
+    });
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      status: httpStatus.BAD_REQUEST,
+      message: error.message,
+    });
+  }
+};
+
+export const resendVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const result = await authModel.resendVerificationEmail(email);
+
+    return res.status(httpStatus.OK).send({
+      status: httpStatus.OK,
+      message: 'Verification email sent successfully',
+    });
+  } catch (error) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      status: httpStatus.BAD_REQUEST,
+      message: error.message,
+    });
+  }
 };

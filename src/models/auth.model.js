@@ -1,5 +1,6 @@
 import { admin } from '../config/firebase.js';
-import { deleteToken, deleteAllTokens } from './token.model.js';
+import { deleteToken, deleteAllTokens, createVerificationToken, verifyEmailToken } from './token.model.js';
+import { sendVerificationEmail } from '../services/email.service.js';
 import bcrypt from 'bcrypt';
 
 const auth = admin.auth();
@@ -28,6 +29,15 @@ export const userRegister = async (data) => {
       emailVerified: false,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
+
+    // Create verification token and send email
+    try {
+      const verificationToken = await createVerificationToken(userRef.id, data.email);
+      await sendVerificationEmail(data.email, verificationToken, data.name);
+    } catch (emailError) {
+      console.error('Email sending error:', emailError);
+      // Don't fail registration if email fails
+    }
 
     // Return user-like object
     return {
@@ -96,6 +106,57 @@ export const userResetPassword = async (email) => {
       throw new Error('No user found with this email');
     }
 
+    throw error;
+  }
+};
+
+export const verifyUserEmail = async (token) => {
+  try {
+    const result = await verifyEmailToken(token);
+    
+    if (!result) {
+      return null; // Invalid or expired token
+    }
+
+    // Update user's email verified status in Firestore
+    const db = admin.firestore();
+    await db.collection('users').doc(result.userId).update({
+      emailVerified: true,
+      emailVerifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Email verification error:', error);
+    throw error;
+  }
+};
+
+export const resendVerificationEmail = async (email) => {
+  try {
+    const db = admin.firestore();
+    
+    // Find user by email
+    const userQuery = await db.collection('users').where('email', '==', email).get();
+    
+    if (userQuery.empty) {
+      throw new Error('User not found');
+    }
+    
+    const userDoc = userQuery.docs[0];
+    const userData = userDoc.data();
+    
+    if (userData.emailVerified) {
+      throw new Error('Email is already verified');
+    }
+
+    // Create new verification token and send email
+    const verificationToken = await createVerificationToken(userDoc.id, email);
+    await sendVerificationEmail(email, verificationToken, userData.name);
+
+    return { success: true };
+  } catch (error) {
+    console.error('Resend verification error:', error);
     throw error;
   }
 };

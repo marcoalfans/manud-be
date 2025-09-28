@@ -6,6 +6,7 @@ const config = {
   app: {
     host: process.env.APP_HOST,
     port: process.env.APP_PORT,
+    baseUrl: process.env.BASE_URL || 'http://localhost:7777',
   },
   jwt: {
     secret: process.env.JWT_SECRET,
@@ -35,6 +36,10 @@ const config = {
   },
   gemini: {
     apiKey: process.env.GEMINI_API_KEY,
+  },
+  email: {
+    user: process.env.EMAIL_USER,
+    password: process.env.EMAIL_PASSWORD,
   },
 };
 

@@ -2,6 +2,7 @@ import express from 'express';
 import auth from '../middlewares/auth.js';
 import validate from '../middlewares/validate.js';
 import * as authValidation from '../validations/auth.validation.js';
+import * as emailValidation from '../validations/email.validation.js';
 import * as authController from '../controllers/auth.controller.js';
 
 const router = express.Router();
@@ -13,5 +14,7 @@ router.get('/logout', auth, authController.logout);
 router.get('/token-validation', authController.tokenValidation);
 router.get('/google', authController.redirectGoogleLogin);
 router.get('/google-callback', authController.loginWithGoogle);
+router.get('/verify-email', authController.verifyEmail);
+router.post('/resend-verification', validate(emailValidation.resendVerification), authController.resendVerification);
 
 export default router;

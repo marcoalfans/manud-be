@@ -1,4 +1,5 @@
 import { db, admin } from '../config/firebase.js';
+import crypto from 'crypto';
 
 export const addToken = async (userId, token) => {
   const docRef = db.collection('tokens').doc();
@@ -52,4 +53,73 @@ export const isTokenValid = async (userId, token) => {
   }
 
   return true;
+};
+
+// Email verification token functions
+export const createVerificationToken = async (userId, email) => {
+  const token = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+  const docRef = db.collection('verificationTokens').doc();
+  await docRef.set({
+    token,
+    userId,
+    email,
+    type: 'email_verification',
+    expiresAt,
+    used: false,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return token;
+};
+
+export const verifyEmailToken = async (token) => {
+  const querySnapshot = await db.collection('verificationTokens')
+    .where('token', '==', token)
+    .where('type', '==', 'email_verification')
+    .where('used', '==', false)
+    .limit(1)
+    .get();
+
+  if (querySnapshot.empty) {
+    return null;
+  }
+
+  const doc = querySnapshot.docs[0];
+  const tokenData = doc.data();
+
+  // Check if token is expired
+  const now = new Date();
+  const expiresAt = tokenData.expiresAt.toDate();
+  
+  if (now > expiresAt) {
+    return null; // Token expired
+  }
+
+  // Mark token as used
+  await doc.ref.update({ used: true });
+
+  return {
+    userId: tokenData.userId,
+    email: tokenData.email,
+  };
+};
+
+export const createPasswordResetToken = async (userId, email) => {
+  const token = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+  const docRef = db.collection('verificationTokens').doc();
+  await docRef.set({
+    token,
+    userId,
+    email,
+    type: 'password_reset',
+    expiresAt,
+    used: false,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return token;
 };
